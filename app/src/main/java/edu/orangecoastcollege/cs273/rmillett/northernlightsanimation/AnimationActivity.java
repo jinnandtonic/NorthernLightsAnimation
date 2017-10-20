@@ -1,5 +1,6 @@
 package edu.orangecoastcollege.cs273.rmillett.northernlightsanimation;
 
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,10 +11,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 /**
- * <code>AnimationActivity</code> allows the user to interact with an animation by toggling or
- * adjusting various
+ * <code>AnimationActivity</code> allows the user to interact with an animation by toggling
+ * different buttons
  *
  */
 public class AnimationActivity extends AppCompatActivity {
@@ -26,6 +28,8 @@ public class AnimationActivity extends AppCompatActivity {
     private Animation customAnim;
 
     private Handler handler;
+
+    private LinearLayout northernLightsLinearLayout;
 
     private Button frameAnimButton;
     private Button rotateAnimButton;
@@ -42,6 +46,8 @@ public class AnimationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animation);
+
+        northernLightsLinearLayout = (LinearLayout) findViewById(R.id.northernLightsLinearLayout);
 
         lightsImageView = (ImageView) findViewById(R.id.lightsImageView);
 
@@ -134,18 +140,22 @@ public class AnimationActivity extends AppCompatActivity {
         if (!customAnim.hasStarted() || customAnim.hasEnded()) {
             lightsImageView.startAnimation(customAnim);
             customAnimButton.setText(getString(R.string.custom_anim_button_text_on));
-            enterVoid();
+            enterTheVoid();
             Log.e(TAG, "customAnim Started");
         }
         else {
             lightsImageView.clearAnimation();
             customAnimButton.setText(getString(R.string.custom_anim_button_text_off));
-            exitVoid();
+            exitTheVoid();
             Log.e(TAG, "customAnim Cleared");
         }
     }
 
-    private void enterVoid() {
+    // TODO: rethink this method
+    private void enterTheVoid() {
+        // change global theme to secondary
+        northernLightsLinearLayout.setBackgroundColor(Color.BLACK);
+
         // disable other buttons
         frameAnimButton.setEnabled(false);
         rotateAnimButton.setEnabled(false);
@@ -160,11 +170,13 @@ public class AnimationActivity extends AppCompatActivity {
             frameAnim.start();
             frameAnimButton.setText(getString(R.string.frame_anim_button_text_on));
         }
-
-        // TODO: change global theme to dark
     }
 
-    private void exitVoid() {
+    // TODO: rethink this method
+    private void exitTheVoid() {
+        // change global theme back to normal
+        northernLightsLinearLayout.setBackgroundColor(Color.WHITE);
+
         // enable other buttons
         frameAnimButton.setEnabled(true);
         rotateAnimButton.setEnabled(true);
@@ -173,7 +185,5 @@ public class AnimationActivity extends AppCompatActivity {
         // stop frame animation
         frameAnim.stop();
         frameAnimButton.setText(getString(R.string.frame_anim_button_text_off));
-
-        // TODO: change global theme back to normal
     }
 }
