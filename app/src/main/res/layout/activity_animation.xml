@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:onClick="toggleFrameAnim"
-        android:text="@string/frame_anim_button_text" />
+        android:text="@string/frame_anim_button_text_off" />
 
     <Button
         android:id="@+id/rotateAnimButton"
@@ -47,5 +47,5 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:onClick="toggleCustomAnim"
-        android:text="@string/custom_anim_button_text" />
+        android:text="@string/custom_anim_button_text_off" />
 </LinearLayout>

@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">Northern Lights Animation</string>
-    <string name="frame_anim_button_text">Frame Animation</string>
+
+    <string name="frame_anim_button_text_on">Frame Animation (ON)</string>
+    <string name="frame_anim_button_text_off">Frame Animation (OFF)</string>
     <string name="rotate_anim_button_text">Rotate Animation</string>
     <string name="shake_anim_button_text">Shake Animation</string>
-    <string name="custom_anim_button_text">Enter the Void</string>
+    <string name="custom_anim_button_text_on">Exit the Void</string>
+    <string name="custom_anim_button_text_off">Enter the Void</string>
+
     <string name="lights_image_view_text">Northern Lights</string>
 </resources>

@@ -2,6 +2,7 @@ package edu.orangecoastcollege.cs273.rmillett.northernlightsanimation;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -24,9 +25,12 @@ public class AnimationActivity extends AppCompatActivity {
     private Animation shakeAnim;
     private Animation customAnim;
 
+    private Handler handler;
+
     private Button frameAnimButton;
-    private Button rotateButton;
-    private Button shakeButton;
+    private Button rotateAnimButton;
+    private Button shakeAnimButton;
+    private Button customAnimButton;
 
     private ImageView lightsImageView; // link to VIEW
 
@@ -39,10 +43,14 @@ public class AnimationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animation);
 
-        frameAnimButton = (Button) findViewById(R.id.frameAnimButton);
-        rotateButton = (Button) findViewById(R.id.rotateAnimButton);
-        shakeButton = (Button) findViewById(R.id.shakeAnimButton);
         lightsImageView = (ImageView) findViewById(R.id.lightsImageView);
+
+        frameAnimButton = (Button) findViewById(R.id.frameAnimButton);
+        rotateAnimButton = (Button) findViewById(R.id.rotateAnimButton);
+        shakeAnimButton = (Button) findViewById(R.id.shakeAnimButton);
+        customAnimButton = (Button) findViewById(R.id.customAnimButton);
+
+        handler = new Handler();
     }
 
     /**
@@ -56,8 +64,14 @@ public class AnimationActivity extends AppCompatActivity {
             frameAnim = (AnimationDrawable) lightsImageView.getBackground();
         }
 
-        if (frameAnim.isRunning()) frameAnim.stop();
-        else frameAnim.start();
+        if (frameAnim.isRunning()) {
+            frameAnim.stop();
+            frameAnimButton.setText(getString(R.string.frame_anim_button_text_off));
+        }
+        else {
+            frameAnim.start();
+            frameAnimButton.setText(getString(R.string.frame_anim_button_text_on));
+        }
     }
 
     /**
@@ -70,8 +84,19 @@ public class AnimationActivity extends AppCompatActivity {
             rotateAnim = AnimationUtils.loadAnimation(this, R.anim.rotate_anim);
 
         // if hasn't started or has completed
-        if (!rotateAnim.hasStarted() || rotateAnim.hasEnded())
+        if (!rotateAnim.hasStarted() || rotateAnim.hasEnded()) {
             lightsImageView.startAnimation(rotateAnim);
+            shakeAnimButton.setEnabled(false);
+            customAnimButton.setEnabled(false);
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    shakeAnimButton.setEnabled(true);
+                    customAnimButton.setEnabled(true);
+                }
+            }, 2000);
+        }
     }
 
     /**
@@ -81,6 +106,19 @@ public class AnimationActivity extends AppCompatActivity {
     public void toggleShakeAnim(View view) {
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake_anim);
         lightsImageView.startAnimation(shakeAnim);
+
+        if (!shakeAnim.hasStarted() || shakeAnim.hasEnded()) {
+            rotateAnimButton.setEnabled(false);
+            customAnimButton.setEnabled(false);
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    rotateAnimButton.setEnabled(true);
+                    customAnimButton.setEnabled(true);
+                }
+            }, 1200);
+        }
     }
 
     /**
@@ -95,11 +133,13 @@ public class AnimationActivity extends AppCompatActivity {
 
         if (!customAnim.hasStarted() || customAnim.hasEnded()) {
             lightsImageView.startAnimation(customAnim);
+            customAnimButton.setText(getString(R.string.custom_anim_button_text_on));
             enterVoid();
             Log.e(TAG, "customAnim Started");
         }
         else {
             lightsImageView.clearAnimation();
+            customAnimButton.setText(getString(R.string.custom_anim_button_text_off));
             exitVoid();
             Log.e(TAG, "customAnim Cleared");
         }
@@ -108,15 +148,18 @@ public class AnimationActivity extends AppCompatActivity {
     private void enterVoid() {
         // disable other buttons
         frameAnimButton.setEnabled(false);
-        rotateButton.setEnabled(false);
-        shakeButton.setEnabled(false);
+        rotateAnimButton.setEnabled(false);
+        shakeAnimButton.setEnabled(false);
 
         // start frame animation
         if (frameAnim == null) {
             lightsImageView.setBackgroundResource(R.drawable.frame_anim);
             frameAnim = (AnimationDrawable) lightsImageView.getBackground();
         }
-        if (!frameAnim.isRunning()) frameAnim.start();
+        if (!frameAnim.isRunning()) {
+            frameAnim.start();
+            frameAnimButton.setText(getString(R.string.frame_anim_button_text_on));
+        }
 
         // TODO: change global theme to dark
     }
@@ -124,11 +167,12 @@ public class AnimationActivity extends AppCompatActivity {
     private void exitVoid() {
         // enable other buttons
         frameAnimButton.setEnabled(true);
-        rotateButton.setEnabled(true);
-        shakeButton.setEnabled(true);
+        rotateAnimButton.setEnabled(true);
+        shakeAnimButton.setEnabled(true);
 
         // stop frame animation
         frameAnim.stop();
+        frameAnimButton.setText(getString(R.string.frame_anim_button_text_off));
 
         // TODO: change global theme back to normal
     }
