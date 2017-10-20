@@ -3,6 +3,7 @@ package edu.orangecoastcollege.cs273.rmillett.northernlightsanimation;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -14,6 +15,8 @@ import android.widget.ImageView;
  *
  */
 public class AnimationActivity extends AppCompatActivity {
+
+    public static final String TAG = "NorthernLightsAnimation";
 
     private AnimationDrawable frameAnim; // AnimationDrawable class used for frame animations
     private Animation rotateAnim; // Animation class used for tween(ed) animations
@@ -39,7 +42,7 @@ public class AnimationActivity extends AppCompatActivity {
      * @param view
      */
     public void toggleFrameAnim(View view) {
-        // if frameAnim hasn'e been initialized...
+        // if frameAnim hasn't been initialized...
         if (frameAnim == null) {
             lightsImageView.setBackgroundResource(R.drawable.frame_anim);
             frameAnim = (AnimationDrawable) lightsImageView.getBackground();
@@ -60,7 +63,7 @@ public class AnimationActivity extends AppCompatActivity {
         if (rotateAnim == null)
             rotateAnim = AnimationUtils.loadAnimation(this, R.anim.rotate_anim);
 
-        // if hasn't started ir has completed
+        // if hasn't started or has completed
         if (!rotateAnim.hasStarted() || rotateAnim.hasEnded())
             lightsImageView.startAnimation(rotateAnim);
     }
@@ -79,6 +82,18 @@ public class AnimationActivity extends AppCompatActivity {
      * @param view
      */
     public void toggleCustomAnim(View view) {
-        // TODO: make a custom animation
+        if (customAnim == null) {
+            customAnim = AnimationUtils.loadAnimation(this, R.anim.custom_anim);
+            Log.e(TAG, "customAnim Initialized");
+        }
+
+        if (!customAnim.hasStarted() || customAnim.hasEnded()) {
+            lightsImageView.startAnimation(customAnim);
+            Log.e(TAG, "customAnim Started");
+        }
+        else {
+            lightsImageView.clearAnimation();
+            Log.e(TAG, "customAnim Cleared");
+        }
     }
 }

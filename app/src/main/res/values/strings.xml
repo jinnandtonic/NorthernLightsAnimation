@@ -3,6 +3,6 @@
     <string name="frame_anim_button_text">Frame Animation</string>
     <string name="rotate_anim_button_text">Rotate Animation</string>
     <string name="shake_anim_button_text">Shake Animation</string>
-    <string name="custom_anim_button_text">Custom Animation</string>
+    <string name="custom_anim_button_text">Enter the Void</string>
     <string name="lights_image_view_text">Northern Lights</string>
 </resources>
