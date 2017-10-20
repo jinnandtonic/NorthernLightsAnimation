@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 
 /**
@@ -23,6 +24,10 @@ public class AnimationActivity extends AppCompatActivity {
     private Animation shakeAnim;
     private Animation customAnim;
 
+    private Button frameAnimButton;
+    private Button rotateButton;
+    private Button shakeButton;
+
     private ImageView lightsImageView; // link to VIEW
 
     /**
@@ -34,6 +39,9 @@ public class AnimationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animation);
 
+        frameAnimButton = (Button) findViewById(R.id.frameAnimButton);
+        rotateButton = (Button) findViewById(R.id.rotateAnimButton);
+        shakeButton = (Button) findViewById(R.id.shakeAnimButton);
         lightsImageView = (ImageView) findViewById(R.id.lightsImageView);
     }
 
@@ -48,9 +56,7 @@ public class AnimationActivity extends AppCompatActivity {
             frameAnim = (AnimationDrawable) lightsImageView.getBackground();
         }
 
-        // if frameAnim is running, stop it
         if (frameAnim.isRunning()) frameAnim.stop();
-        // else, stop it
         else frameAnim.start();
     }
 
@@ -89,11 +95,41 @@ public class AnimationActivity extends AppCompatActivity {
 
         if (!customAnim.hasStarted() || customAnim.hasEnded()) {
             lightsImageView.startAnimation(customAnim);
+            enterVoid();
             Log.e(TAG, "customAnim Started");
         }
         else {
             lightsImageView.clearAnimation();
+            exitVoid();
             Log.e(TAG, "customAnim Cleared");
         }
+    }
+
+    private void enterVoid() {
+        // disable other buttons
+        frameAnimButton.setEnabled(false);
+        rotateButton.setEnabled(false);
+        shakeButton.setEnabled(false);
+
+        // start frame animation
+        if (frameAnim == null) {
+            lightsImageView.setBackgroundResource(R.drawable.frame_anim);
+            frameAnim = (AnimationDrawable) lightsImageView.getBackground();
+        }
+        if (!frameAnim.isRunning()) frameAnim.start();
+
+        // TODO: change global theme to dark
+    }
+
+    private void exitVoid() {
+        // enable other buttons
+        frameAnimButton.setEnabled(true);
+        rotateButton.setEnabled(true);
+        shakeButton.setEnabled(true);
+
+        // stop frame animation
+        frameAnim.stop();
+
+        // TODO: change global theme back to normal
     }
 }
